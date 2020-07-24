@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\DictionaryController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $name = "<script>alert('hello 123')</script>";
-    return view('welcome', ['name' => $name]);
+    return view('homepage');
 });
 
 Route::get('/hello/{name?}', function ($name = null) {
@@ -85,3 +86,53 @@ Route::post('distionaries/index', function (Illuminate\Http\Request $request) {
         return view('distionaries.index', ['result' => $result]);
     }
 });
+Route::get('times/index', function () {
+    return view('times.index');
+});
+Route::post('times/index', 'TimeController@index');
+
+
+Route::group(['prefix' => 'customers'], function(){
+    Route::get('index','ManagerController@index');
+    Route::get('create', 'ManagerController@create');
+    Route::get('delete/{id}', 'ManagerController@delete');
+    Route::get('edit/{id}', 'ManagerController@edit');
+});
+
+Route::post('store', function () {
+
+});
+
+
+Route::get('/services', 'ServiceController@index')->middleware('auth');
+Route::post('/services', 'ServiceController@store');
+
+Route::get('/customers', 'ManagerController@store')->name('customers.index');
+Route::get('/customers/{manager}', 'ManagerController@show');
+Route::post('/customers/store', 'ManagerController@store');
+Route::get('/customers/delete/{id}', 'ManagerController@delete')->name('customers.delete');
+Route::get('/customers/edit/{id}', 'ManagerController@edit')->name('customers.edit');
+Route::put('/customers/update/{id}', 'ManagerController@update')->name('customers.update');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::group(['prefix' => 'tasks'], function () {
+    Route::get('/index', 'TaskController@index')->name('tasks.index');
+    Route::get('/list', 'TaskController@select')->name('tasks.list');
+    Route::get('/add', 'TaskController@add')->name('tasks.add');
+    Route::post('/store', 'TaskController@store')->name('tasks.store');
+});
+
+Route::group(['prefix' => 'guests'], function () {
+    Route::get('/index', 'GuestController@index')->name('guests.index');
+    Route::get('/{id}/edit', 'GuestController@edit')->name('guests.edit');
+    Route::post('/{id}/edit', 'GuestController@update')->name('guests.update');
+    Route::get('/create', 'GuestController@create')->name('guests.create');
+    Route::post('/create', 'GuestController@store')->name('guests.store');
+    Route::get('/{id}/destroy', 'GuestController@destroy')->name('guests.destroy');
+});
+
