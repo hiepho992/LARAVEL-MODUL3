@@ -104,7 +104,7 @@ Route::post('store', function () {
 });
 
 
-Route::get('/services', 'ServiceController@index')->middleware('auth');
+Route::get('/services', 'ServiceController@index');
 Route::post('/services', 'ServiceController@store');
 
 Route::get('/customers', 'ManagerController@store')->name('customers.index');
@@ -136,3 +136,15 @@ Route::group(['prefix' => 'guests'], function () {
     Route::get('/{id}/destroy', 'GuestController@destroy')->name('guests.destroy');
 });
 
+Route::group(['prefix' => 'Product'],function(){
+    Route::get('/index', 'ProductController@index')->name('product.index');
+    Route::get('/create', 'ProductController@create')->name('product.create');
+    Route::post('/store', 'ProductController@store')->name('product.store');
+    Route::get('/show/{id}', 'ProductController@show')->name('product.show');
+});
+
+Route::group(['prefix' => 'carts'], function () {
+    Route::get('/index', 'CartController@index')->name('carts.index');
+    Route::get('/cart/{id}', 'CartController@cart')->name('carts.cart');
+    Route::get('/deleteCart/{id}', 'CartController@deleteCart')->name('carts.deleteCart');
+});

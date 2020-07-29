@@ -14,7 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        return view('products.index', compact('products'));
+
     }
 
     /**
@@ -24,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +37,29 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $product = new Product();
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->info = $request->information;
+        $file = $request->inputFile;
+        if (!$request->hasFile('inputFile')) {
+            $product->image = $file;
+        } else {
+            $fileName = $request->inputFileName;
+        }
+        $fileExtension = $file->getClientOriginalExtension();
+        $newFileName = "$fileName.$fileExtension";
+
+        $product->image = $newFileName;
+        $request->file('inputFile')->storeAs('public/images', $newFileName);
+        $product->save();
+
+        notify()->success('Thêm thành công!');
+
+        return redirect()->back();
+
+
     }
 
     /**
@@ -44,9 +68,11 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $products = Product::findOrFail($id);
+
+        return view('products.show', compact('products'));
     }
 
     /**

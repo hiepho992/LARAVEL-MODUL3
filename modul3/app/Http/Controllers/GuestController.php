@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Guest;
+use App\Http\Requests\ValidateMain;
 use Illuminate\Http\Request;
 use Mckenziearts\Notify\LaravelNotify;
 
@@ -20,13 +21,13 @@ class GuestController extends Controller
         return view('guests.create');
     }
 
-    public function store()
+    public function store(ValidateMain $request)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'email' => 'required'
-            ]);
-
+        // $data = request()->validate([
+        //     'name' => 'required',
+        //     'email' => 'required'
+        //     ]);
+            $data = $request->all();
             $guests = new Guest();
             $guests->create($data);
 

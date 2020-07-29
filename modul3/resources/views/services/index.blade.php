@@ -1,5 +1,6 @@
 @extends('welcome')
 @section('content')
+@notifyCss
 <div>
     <form action="/services" method="post">
     @csrf
@@ -17,4 +18,6 @@
     </p>
     @endforeach
 </div>
+@include('notify::messages')
+@notifyJs
 @endsection

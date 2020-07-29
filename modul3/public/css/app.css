@@ -10927,4 +10927,34 @@ a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
-
+.product{
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    align-items: center;
+    justify-content: center ;
+}
+.product-image{
+    border: 1px solid gray;
+    margin-top: 20px;
+}
+.product-image p{
+    margin: 0;
+    padding: 0px 5px;
+}
+.container-show{
+    display: flex;
+    margin: 50px;
+}
+.container-show > .row1{
+    flex: 1;
+    text-align: center;
+    align-items: center;
+}
+.row1>img{
+    width: 300px;
+    height: 400px;
+}
+.row1>p{
+    text-align: left;
+}
